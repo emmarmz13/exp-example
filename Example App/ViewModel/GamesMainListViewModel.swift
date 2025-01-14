@@ -14,6 +14,7 @@ final class GamesMainListViewModel: ObservableObject, GameListProtocol {
     @Published private(set) var gamesList: [GamesModel] = []
     @Published private(set) var showLoading: Bool = false
     @Published private(set) var gameSelected: GamesModel? = nil
+    @Published var isSearching: Bool = false
     @Published var errorMessage: String?
     @Published var searchText: String = ""
     @Published var showAlert: Bool = false
@@ -57,7 +58,7 @@ final class GamesMainListViewModel: ObservableObject, GameListProtocol {
                     }
                 }
             } receiveValue: { [weak self] gamesList in
-                let sortedGames = gamesList.sorted { $0.id < $1.id }
+                let sortedGames = gamesList.sorted { $0.title < $1.title }
                 self?.gamesList = sortedGames
                 self?.resetGames()
                 self?.isertGames(games: sortedGames)
@@ -83,7 +84,7 @@ final class GamesMainListViewModel: ObservableObject, GameListProtocol {
     
     private func getGamesFromData() {
         self.gamesList = dbHelper.fetchGames()
-            .sorted { $0.id < $1.id }
+            .sorted { $0.title < $1.title }
     }
     
     func updateGame(game: GamesModel) {

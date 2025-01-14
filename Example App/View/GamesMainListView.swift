@@ -26,7 +26,7 @@ struct GamesMainListView: View {
                 .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
-            .searchable(text: $viewModel.searchText)
+            .searchable(text: $viewModel.searchText, isPresented: $viewModel.isSearching)
         }
         .background(CommonColors.background.color(colorScheme))
         .overlay(alignment: .center) {
@@ -60,13 +60,18 @@ struct GamesMainListView: View {
             }), secondaryButton: .cancel())
         }
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
                     viewModel.showAlert.toggle()
                 } label: {
                     Image(systemName: "icloud.and.arrow.down")
                 }
                 .foregroundStyle(Color.blue)
+                Button {
+                    viewModel.isSearching.toggle()
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                }
             }
         }
     }
